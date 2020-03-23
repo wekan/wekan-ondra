@@ -1,3 +1,60 @@
+# v3.85 2020-03-23 Wekan release
+
+This release fixes the following SECURITY VULNERABLITIES:
+
+- [Fix XSS bug reported today 4 hours ago by Cyb3rjunky](https://github.com/wekan/wekan/commit/482682e50079d70c5113169020d6834013b57c11).
+  Logged in users could run javascript in input fields.
+  This affects Wekan versions v3.12-v3.84.
+  In [Wekan v3.12](https://github.com/wekan/wekan/blob/master/CHANGELOG.md#v312-2019-08-09-wekan-release)
+  there was [changes for XSS filter to allow inserting images, videos etc
+  on comment WYSIWYG editor](https://github.com/wekan/wekan/pull/2593)
+  so features related to that are now removed.
+  After this fix, Javascript in input fields is not executed.
+  Thanks to Cyb3rjunky and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
+# v3.84 2020-03-16 Wekan release
+
+This release adds the following features:
+
+- Add settings for mouse wheel scroll inertia and scroll
+  amount [Part1](https://github.com/wekan/wekan/commit/9d13001b903f9ec50f5fa3a4bdbacae32b27ac65)
+  and [Part2](https://github.com/wekan/wekan/commit/aaecac091209e90c0c2123830728f5e7a835ccb4).
+  For example: sudo snap set wekan scrollinertia='200' , sudo snap set wekan scrollamount='200' .
+  Thanks to danger89 and xet7.
+
+and adds the following updates:
+
+- [Upgrade to Meteor 1.10.1](https://github.com/wekan/wekan/commit/e16c65babc1f021c35a3d46bc61e649ec94d1e82).
+  Thanks to xet7.
+- [Update markdown](https://github.com/wekan/wekan/commit/6e0fa78022ea487176eb0a32ec5a4a441f8e0c3c).
+  Thanks to xet7.
+- [Update minimist](https://github.com/wekan/wekan/commit/ea6baa5c2b956ee28b0a7e63f988e2fc1998201a).
+  Thanks to xet7.
+- [Update acorn](https://github.com/wekan/wekan/commit/369a29707bbec3bf89717c16e8b698fb4666087a).
+  Thanks to xet7.
+- [Update prettier-eslint](https://github.com/wekan/wekan/commit/8183b7bdaa01d2ce53ac7215beafd5efe21373e8).
+  Thanks to xet7.
+- [Update ostrio:cookies](https://github.com/wekan/wekan/commit/14b8610837117616d436e2bac6a9dc653e315662).
+  Thanks to xet7.
+- [Add build time profiling to build script](https://github.com/wekan/wekan/commit/f968109e7390139e50375ee29bc7bc3cf1e1ab41).
+  Thanks to zodern.
+
+and fixes the following bugs:
+
+- [Downgrade stylus to v1.1.0 to speed up building Wekan](https://github.com/wekan/wekan/commit/fca4cdcebf1cc6642aefeb78b911cb5b95ebe473).
+  This is because building newer stylus v2 takes 52 minutes. After this change, building Wekan takes 3 minutes.
+  Thanks to zodern.
+- [Fix: Error when retrieve token from some OIDC due to not necessary scope
+  parameter](https://github.com/wekan/wekan/pull/2955).
+  Thanks to benoitm76.
+- [Fix: img tag did not allow width and height. Removed swipebox from markdown editor
+  img tag and updated marked markdown to newest version](https://github.com/wekan/wekan/commit/2b26bbe78a1a2b8b427963a6c44c3853efdb737e).
+  Thanks to hradec and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v3.83 2020-03-01 Wekan release
 
 This release tries to revert remaining the following changes:
