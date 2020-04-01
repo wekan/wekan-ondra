@@ -1,3 +1,22 @@
+# v3.88 2020-04-02 Wekan release
+
+This release adds the following new features:
+
+- [Notification drawer](https://github.com/wekan/wekan/pull/2975) [like Trello](https://github.com/wekan/wekan/issues/2471).
+  Thanks to jtbairdsr and xet7.
+
+and makes the following UI changes:
+
+- [Minicard labels on the top and title on bottom](https://github.com/wekan/wekan/issues/2980).
+  Thanks to helioguardabaxo and xet7.
+
+and fixes the following bugs:
+
+- [Fix start-wekan.sh MongoDB port to 27017](https://github.com/wekan/wekan/commit/c60a092fc0ed9fe15c417bcb443b1e3e3aaedf7e).
+  Thanks to Keelan and xet7.
+    
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v3.87 2020-04-01 Wekan release
 
 This release makes the following UI changes:
