@@ -1,3 +1,28 @@
+# v3.93 2020-04-10 Wekan release
+
+This release adds the following new features:
+
+- [Trello vote import & hide export button if with_api is
+  disabled](https://github.com/wekan/wekan/pull/3000).
+  Thanks to NicoP-S.
+- [When adding a user to a board that has subtasks, also add user to the subtask
+  board](https://github.com/wekan/wekan/pull/3004).
+  Thanks to slvrpdr.
+
+and adds the following updates:
+
+- Upgrade to Node v12.16.2 [Part1](https://github.com/wekan/wekan/commit/6db717b9b384fe1491063e507b80e67791a07e3a)
+  and [Part2](https://github.com/wekan/wekan/commit/268d7fcb32186a902a84e7f6d80c50b1f3790bad).
+  Thanks to Node developers and xet7.
+
+and fixes the following bugs:
+
+- [Fix bug that prevents editing or deleting
+  comments](https://github.com/wekan/wekan/pull/3005).
+  Thanks to jtbairdsr.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v3.92 2020-04-09 Wekan release
 
 This release adds the following new features:
