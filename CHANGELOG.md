@@ -1,3 +1,29 @@
+# v3.97 2020-04-19 Wekan release
+
+This release adds the following new features:
+
+- [Sortable boards](https://github.com/wekan/wekan/pull/3027).
+  Thanks to boeserwolf.
+- [Added dockerfiles for multi-arch builds and manifest](https://github.com/wekan/wekan/pull/3023).
+  [In Progress](https://github.com/wekan/wekan/issues/2999).
+  Thanks to brokencode64.
+- [Make linked card clickable](https://github.com/wekan/wekan/pull/3025).
+  Thanks to boeserwolf.
+
+and fixes the following bugs:
+
+- [Fix using checklists on mobile and iPad](https://github.com/wekan/wekan/pull/3019).
+  Thanks to devinsm.
+- [Improve card layout on mobile devices](https://github.com/wekan/wekan/pull/3024).
+  Thanks to marc1006.
+- [Make OCP OAuth work with Openshift 4.x](https://github.com/wekan/wekan/pull/3020).
+  Thanks to ckavili.
+- [Remove old warning from Sandstorm import board data loss, because bug has been already
+  fixed](https://github.com/wekan/wekan/commit/960fe5163b6a2f7c3dca03b5e31d69611b49f079).
+  Thanks to aputsiaq and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v3.96 2020-04-15 Wekan release
 
 This release adds the following Sandstorm updates:
