@@ -1,5 +1,5 @@
 const subManager = new SubsManager();
-const { calculateIndex, enableClickOnTouch } = Utils;
+const { calculateIndex } = Utils;
 
 Template.boardListHeaderBar.events({
   'click .js-open-archived-board'() {
@@ -9,7 +9,7 @@ Template.boardListHeaderBar.events({
 
 Template.boardListHeaderBar.helpers({
   title() {
-    return FlowRouter.getRouteName() == 'home' ? 'my-boards' : 'public';
+    return FlowRouter.getRouteName() === 'home' ? 'my-boards' : 'public';
   },
   templatesBoardId() {
     return Meteor.user() && Meteor.user().getTemplatesBoardId();
@@ -68,9 +68,6 @@ BlazeComponent.extendComponent({
       },
     });
 
-    // ugly touch event hotfix
-    enableClickOnTouch(itemsSelector);
-
     // Disable drag-dropping if the current user is not a board member or is comment only
     this.autorun(() => {
       $boards.sortable('option', 'disabled', !userIsAllowedToMove());
@@ -82,11 +79,13 @@ BlazeComponent.extendComponent({
       archived: false,
       type: 'board',
     };
-    if (FlowRouter.getRouteName() == 'home')
+    if (FlowRouter.getRouteName() === 'home')
       query['members.userId'] = Meteor.userId();
     else query.permission = 'public';
 
-    return Boards.find(query, { sort: { sort: 1 /* boards default sorting */ } });
+    return Boards.find(query, {
+      sort: { sort: 1 /* boards default sorting */ },
+    });
   },
   isStarred() {
     const user = Meteor.user();

@@ -774,5 +774,13 @@
   "mark-all-as-read": "Marquer comme lus",
   "remove-all-read": "Supprimer les lus",
   "allow-rename": "Autoriser le renommage",
-  "allowRenamePopup-title": "Autoriser le renommage"
+  "allowRenamePopup-title": "Autoriser le renommage",
+  "start-day-of-week": "Définir le jour de début de semaine",
+  "monday": "Lundi",
+  "tuesday": "Mardi",
+  "wednesday": "Mercredi",
+  "thursday": "Jeudi",
+  "friday": "Vendredi",
+  "saturday": "Samedi",
+  "sunday": "Dimanche"
 }

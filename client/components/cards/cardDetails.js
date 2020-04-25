@@ -1,5 +1,5 @@
 const subManager = new SubsManager();
-const { calculateIndexData, enableClickOnTouch } = Utils;
+const { calculateIndexData } = Utils;
 
 let cardColors;
 Meteor.startup(() => {
@@ -56,9 +56,8 @@ BlazeComponent.extendComponent({
   },
   votePublic() {
     const card = this.currentData();
-    if (card.vote)
-      return card.vote.public
-    return null
+    if (card.vote) return card.vote.public;
+    return null;
   },
   voteCountPositive() {
     const card = this.currentData();
@@ -232,9 +231,6 @@ BlazeComponent.extendComponent({
       },
     });
 
-    // ugly touch event hotfix
-    enableClickOnTouch('.card-checklist-items .js-checklist');
-
     const $subtasksDom = this.$('.card-subtasks-items');
 
     $subtasksDom.sortable({
@@ -270,26 +266,18 @@ BlazeComponent.extendComponent({
       },
     });
 
-    // ugly touch event hotfix
-    enableClickOnTouch('.card-subtasks-items .js-subtasks');
-
     function userIsMember() {
       return Meteor.user() && Meteor.user().isBoardMember();
     }
 
     // Disable sorting if the current user is not a board member
     this.autorun(() => {
-      if ($checklistsDom.data('sortable')) {
-        $checklistsDom.sortable('option', 'disabled', !userIsMember());
+      const disabled = !userIsMember() || Utils.isMiniScreen();
+      if ($checklistsDom.data('uiSortable') || $checklistsDom.data('sortable')) {
+        $checklistsDom.sortable('option', 'disabled', disabled);
       }
-      if ($subtasksDom.data('sortable')) {
-        $subtasksDom.sortable('option', 'disabled', !userIsMember());
-      }
-      if ($checklistsDom.data('sortable')) {
-        $checklistsDom.sortable('option', 'disabled', Utils.isMiniScreen());
-      }
-      if ($subtasksDom.data('sortable')) {
-        $subtasksDom.sortable('option', 'disabled', Utils.isMiniScreen());
+      if ($subtasksDom.data('uiSortable') || $subtasksDom.data('sortable')) {
+        $subtasksDom.sortable('option', 'disabled', disabled);
       }
     });
   },
@@ -380,7 +368,7 @@ BlazeComponent.extendComponent({
           }
         },
         'click .js-go-to-linked-card'() {
-           Utils.goCardId(this.data().linkedId)
+          Utils.goCardId(this.data().linkedId);
         },
         'click .js-member': Popup.open('cardMember'),
         'click .js-add-members': Popup.open('cardMembers'),
@@ -391,7 +379,7 @@ BlazeComponent.extendComponent({
         'click .js-start-date': Popup.open('editCardStartDate'),
         'click .js-due-date': Popup.open('editCardDueDate'),
         'click .js-end-date': Popup.open('editCardEndDate'),
-        'click .js-show-positive-votes':Popup.open('positiveVoteMembers'),
+        'click .js-show-positive-votes': Popup.open('positiveVoteMembers'),
         'click .js-show-negative-votes': Popup.open('negativeVoteMembers'),
         'mouseenter .js-card-details'() {
           const parentComponent = this.parentComponent().parentComponent();
@@ -420,9 +408,9 @@ BlazeComponent.extendComponent({
           const forIt = $(e.target).hasClass('js-vote-positive');
           let newState = null;
           if (
-            this.voteState() == null ||
-            (this.voteState() == false && forIt) ||
-            (this.voteState() == true && !forIt)
+            this.voteState() === null ||
+            (this.voteState() === false && forIt) ||
+            (this.voteState() === true && !forIt)
           ) {
             newState = forIt;
           }
@@ -658,7 +646,7 @@ Template.cardDetailsActionsPopup.events({
   },
 });
 
-Template.editCardTitleForm.onRendered(function () {
+Template.editCardTitleForm.onRendered(function() {
   autosize(this.$('.js-edit-card-title'));
 });
 
@@ -672,7 +660,7 @@ Template.editCardTitleForm.events({
   },
 });
 
-Template.editCardRequesterForm.onRendered(function () {
+Template.editCardRequesterForm.onRendered(function() {
   autosize(this.$('.js-edit-card-requester'));
 });
 
@@ -685,7 +673,7 @@ Template.editCardRequesterForm.events({
   },
 });
 
-Template.editCardAssignerForm.onRendered(function () {
+Template.editCardAssignerForm.onRendered(function() {
   autosize(this.$('.js-edit-card-assigner'));
 });
 
@@ -825,7 +813,7 @@ Template.copyChecklistToManyCardsPopup.events({
 
         // copy subtasks
         cursor = Cards.find({ parentId: oldId });
-        cursor.forEach(function () {
+        cursor.forEach(function() {
           'use strict';
           const subtask = arguments[0];
           subtask.parentId = _id;

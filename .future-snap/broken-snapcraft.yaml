@@ -1,4 +1,4 @@
-name: wekan-ondra
+name: wekan
 version: 0
 version-script: git describe --tags |  cut -c 2-
 summary: The open-source kanban
@@ -65,9 +65,9 @@ apps:
 
 parts:
     mongodb:
-        source: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-3.2.22.tgz
+        source: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.6.tgz
         plugin: dump
-        stage-packages: [libssl1.0.0]
+        stage-packages: [libssl1.0.0, libcurl3]
         filesets:
             mongo:
                 - usr
@@ -90,10 +90,11 @@ parts:
             - ca-certificates
             - apt-utils
             - python
-#            - python3
+            - python3
             - g++
             - capnproto
             - curl
+            - libcurl3
             - execstack
             - nodejs
             - npm
@@ -216,8 +217,6 @@ parts:
             #meteor npm install --save bcrypt
             # Change from npm-bcrypt directory back to .build/bundle/programs/server directory.
             #cd ../../../../
-            # Remove legacy webbroser bundle, so that Wekan works also at Android Firefox, iOS Safari, etc.
-            rm -rf .build/bundle/programs/web.browser.legacy
             # Change to directory .build/bundle/programs/server
             cd .build/bundle/programs/server
             npm install

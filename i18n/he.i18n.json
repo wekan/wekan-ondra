@@ -774,5 +774,13 @@
   "mark-all-as-read": "לסמן הכול כאילו שנקראו",
   "remove-all-read": "הסרת כל אלו שנקראו",
   "allow-rename": "לאפשר שינוי שם",
-  "allowRenamePopup-title": "לאפשר שינוי שם"
+  "allowRenamePopup-title": "לאפשר שינוי שם",
+  "start-day-of-week": "הגדרת יום תחילת השבוע",
+  "monday": "יום שני",
+  "tuesday": "יום שלישי",
+  "wednesday": "יום רביעי",
+  "thursday": "יום חמישי",
+  "friday": "יום שישי",
+  "saturday": "שבת",
+  "sunday": "יום ראשון"
 }

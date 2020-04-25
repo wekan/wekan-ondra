@@ -774,5 +774,13 @@
   "mark-all-as-read": "Marcar todas como lidas",
   "remove-all-read": "Remover todas lidas",
   "allow-rename": "Permitir renomear",
-  "allowRenamePopup-title": "Permitir renomear"
+  "allowRenamePopup-title": "Permitir renomear",
+  "start-day-of-week": "Definir dia em que a semana começa",
+  "monday": "Segunda",
+  "tuesday": "Terça",
+  "wednesday": "Quarta",
+  "thursday": "Quinta",
+  "friday": "Sexta",
+  "saturday": "Sábado",
+  "sunday": "Domingo"
 }
