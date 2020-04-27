@@ -1,3 +1,12 @@
+# v3.99 2020-04-27 Wekan release
+
+This release fixes the following bugs:
+
+- [Fix Boards are very hard to tap in mobile](https://github.com/wekan/wekan/pull/3051).
+  Thanks to marc1006.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v3.98 2020-04-25 Wekan release
 
 News:
