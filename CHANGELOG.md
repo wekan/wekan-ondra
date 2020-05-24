@@ -1,3 +1,26 @@
+# v4.04 2020-05-24 Wekan release
+
+This release adds the following features:
+
+- [Found Time Tracking GPLv3 software "Titra" with integration to Wekan](https://github.com/wekan/wekan/wiki/Time-Tracking).
+  Thanks to willhseitz.
+- [Theme: Natural](https://github.com/wekan/wekan/pull/3098).
+  You can select it from Board Settings / Change color / natural.
+  Thanks to compumatter and helioguardabaxo.
+- [Theme: Modern](https://github.com/wekan/wekan/pull/3106).
+  Thanks to jeroenstoker com and helioguardabaxo.
+- [Export board to HTML static page .zip archive](https://github.com/wekan/wekan/pull/3043).
+  Thanks to Lewiscowles1986.
+
+and fixes the following bugs:
+
+- [Change the swimlaneid of a card only if a new target swimlaneid is selected](https://github.com/wekan/wekan/pull/3108).
+  Thanks to marc1006.
+- [Set '*' as default value for swimlane and list name in card move action](https://github.com/wekan/wekan/pull/3109).
+  Thanks to hickorysb and marc1006.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.03 2020-05-16 Wekan release
 
 This release adds the following features:
