@@ -1,4 +1,4 @@
-# Use use the meteor-spk tool to generate a sandstorm package (spk) from this
+'# Use use the meteor-spk tool to generate a sandstorm package (spk) from this
 # meteor application source code. https://github.com/sandstorm-io/meteor-spk
 @0xa5275bd3ad124e12;
 
@@ -22,10 +22,10 @@ const pkgdef :Spk.PackageDefinition = (
     appTitle = (defaultText = "Wekan"),
     # The name of the app as it is displayed to the user.
 
-    appVersion = 404,
+    appVersion = 407,
     # Increment this for every release.
 
-    appMarketingVersion = (defaultText = "4.04.0~2020-05-24"),
+    appMarketingVersion = (defaultText = "4.07.0~2020-05-26"),
     # Human-readable presentation of the app version.
 
     minUpgradableAppVersion = 0,
@@ -261,7 +261,6 @@ const myCommand :Spk.Manifest.Command = (
     (key = "LDAP_ENABLE", value="false"),
     (key = "PASSWORD_LOGIN_ENABLED", value="true"),
     (key = "SANDSTORM", value="1"),
-    (key = "METEOR_SETTINGS", value = "{\"public\": {\"sandstorm\": true}}"),
-    (key = "ATTACHMENTS_STORE_PATH", value = "/var/attachments/")
+    (key = "METEOR_SETTINGS", value = "{\"public\": {\"sandstorm\": true}}")
   ]
 );

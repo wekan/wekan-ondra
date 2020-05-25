@@ -278,7 +278,7 @@ Cards.attachSchema(
        */
       type: Number,
       decimal: true,
-      defaultValue: '',
+      defaultValue: 0,
     },
     subtaskSort: {
       /**
@@ -412,14 +412,10 @@ Cards.helpers({
     const _id = Cards.insert(this);
 
     // Copy attachments
-    oldCard.attachments().forEach((file) => {
-      Meteor.call('cloneAttachment', file, 
-        {
-          meta: {
-            cardId: _id
-          }
-        }
-      );
+    oldCard.attachments().forEach(att => {
+      att.cardId = _id;
+      delete att._id;
+      return Attachments.insert(att);
     });
 
     // copy checklists
@@ -522,23 +518,23 @@ Cards.helpers({
   attachments() {
     if (this.isLinkedCard()) {
       return Attachments.find(
-        { 'meta.cardId': this.linkedId },
+        { cardId: this.linkedId },
         { sort: { uploadedAt: -1 } },
       );
     } else {
-      let ret = Attachments.find(
-        { 'meta.cardId': this._id },
+      return Attachments.find(
+        { cardId: this._id },
         { sort: { uploadedAt: -1 } },
       );
-      return ret;
     }
   },
 
   cover() {
+    if (!this.coverId) return false;
     const cover = Attachments.findOne(this.coverId);
     // if we return a cover before it is fully stored, we will get errors when we try to display it
     // todo XXX we could return a default "upload pending" image in the meantime?
-    return cover && cover.link();
+    return cover && cover.url() && cover;
   },
 
   checklists() {
@@ -1257,6 +1253,49 @@ Cards.mutations({
         archived: false,
       },
     };
+  },
+
+  moveToEndOfList({ listId } = {}) {
+    let swimlaneId = this.swimlaneId;
+    const boardId = this.boardId;
+    let sortIndex = 0;
+
+    // This should never happen, but there was a bug that was fixed in commit
+    // ea0239538a68e225c867411a4f3e0d27c158383.
+    if (!swimlaneId) {
+      const board = Boards.findOne(boardId);
+      swimlaneId = board.getDefaultSwimline()._id;
+    }
+    // Move the minicard to the end of the target list
+    let parentElementDom = $(`#swimlane-${this.swimlaneId}`).get(0);
+    if (!parentElementDom) parentElementDom = $(':root');
+
+    const lastCardDom = $(parentElementDom)
+      .find(`#js-list-${listId} .js-minicard:last`)
+      .get(0);
+    if (lastCardDom) sortIndex = Utils.calculateIndex(lastCardDom, null).base;
+
+    return this.moveOptionalArgs({
+      boardId: boardId,
+      swimlaneId: swimlaneId,
+      listId: listId,
+      sort: sortIndex,
+    });
+  },
+
+  moveOptionalArgs({ boardId, swimlaneId, listId, sort } = {}) {
+    boardId = boardId || this.boardId;
+    swimlaneId = swimlaneId || this.swimlaneId;
+    // This should never happen, but there was a bug that was fixed in commit
+    // ea0239538a68e225c867411a4f3e0d27c158383.
+    if (!swimlaneId) {
+      const board = Boards.findOne(boardId);
+      swimlaneId = board.getDefaultSwimline()._id;
+    }
+    listId = listId || this.listId;
+    if (sort === undefined || sort === null)
+      sort = this.sort;
+    return this.move(boardId, swimlaneId, listId, sort);
   },
 
   move(boardId, swimlaneId, listId, sort) {
