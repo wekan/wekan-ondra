@@ -95,7 +95,7 @@ Users.attachSchema(
       autoValue() {
         if (this.isInsert && !this.isSet) {
           return {
-            boardView: 'board-view-lists',
+            boardView: 'board-view-swimlanes',
           };
         }
       },
@@ -218,8 +218,8 @@ Users.attachSchema(
       type: String,
       optional: true,
       allowedValues: [
-        'board-view-lists',
         'board-view-swimlanes',
+        'board-view-lists',
         'board-view-cal',
       ],
     },
@@ -903,7 +903,7 @@ if (Meteor.isServer) {
       user.profile = {
         initials,
         fullname: user.services.oidc.fullname,
-        boardView: 'board-view-lists',
+        boardView: 'board-view-swimlanes',
       };
       user.authenticationMethod = 'oauth2';
 
@@ -961,7 +961,7 @@ if (Meteor.isServer) {
       );
     } else {
       user.profile = { icode: options.profile.invitationcode };
-      user.profile.boardView = 'board-view-lists';
+      user.profile.boardView = 'board-view-swimlanes';
 
       // Deletes the invitation code after the user was created successfully.
       setTimeout(
@@ -1109,10 +1109,10 @@ if (Meteor.isServer) {
         });
         */
 
-          const Future = require('fibers/future');
-          let future1 = new Future();
-          let future2 = new Future();
-          let future3 = new Future();
+        const Future = require('fibers/future');
+        let future1 = new Future();
+        let future2 = new Future();
+        let future3 = new Future();
         Boards.insert(
           {
             title: TAPi18n.__('templates'),
@@ -1140,7 +1140,7 @@ if (Meteor.isServer) {
                 Users.update(fakeUserId.get(), {
                   $set: { 'profile.cardTemplatesSwimlaneId': swimlaneId },
                 });
-                  future1.return();
+                future1.return();
               },
             );
 
@@ -1158,7 +1158,7 @@ if (Meteor.isServer) {
                 Users.update(fakeUserId.get(), {
                   $set: { 'profile.listTemplatesSwimlaneId': swimlaneId },
                 });
-                  future2.return();
+                future2.return();
               },
             );
 
@@ -1176,22 +1176,22 @@ if (Meteor.isServer) {
                 Users.update(fakeUserId.get(), {
                   $set: { 'profile.boardTemplatesSwimlaneId': swimlaneId },
                 });
-                  future3.return();
+                future3.return();
               },
             );
           },
         );
-          // HACK
-          future1.wait();
-          future2.wait();
-          future3.wait();
+        // HACK
+        future1.wait();
+        future2.wait();
+        future3.wait();
       });
     });
   }
 
-    Users.after.insert((userId, doc) => {
-        // HACK
-      doc = Users.findOne({_id: doc._id});
+  Users.after.insert((userId, doc) => {
+    // HACK
+    doc = Users.findOne({ _id: doc._id });
     if (doc.createdThroughApi) {
       // The admin user should be able to create a user despite disabling registration because
       // it is two different things (registration and creation).
