@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Wekan REST API
-  version: v4.13
+  version: v4.14
   description: |
     The REST API allows you to control and extend Wekan with ease.
 
@@ -1422,6 +1422,11 @@ paths:
         - name: color
           in: formData
           description: the color value
+          type: string
+          required: true
+        - name: vote
+          in: formData
+          description: the vote value
           type: string
           required: true
         - name: labelIds
@@ -3070,6 +3075,10 @@ definitions:
       showDesktopDragHandles:
         description: |
            does the user want to hide system messages?
+        type: boolean
+      hideCheckedItems:
+        description: |
+           does the user want to hide checked checklist items?
         type: boolean
       hiddenSystemMessages:
         description: |
