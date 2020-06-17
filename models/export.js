@@ -28,7 +28,7 @@ if (Meteor.isServer) {
     const loginToken = req.query.authToken;
     if (loginToken) {
       const hashToken = Accounts._hashLoginToken(loginToken);
-      user = Meteor.users.findOne({
+      user = Users.findOne({
         'services.resume.loginTokens.hashedToken': hashToken,
       });
     } else if (!Meteor.settings.public.sandstorm) {
@@ -69,7 +69,7 @@ if (Meteor.isServer) {
     const loginToken = params.query.authToken;
     if (loginToken) {
       const hashToken = Accounts._hashLoginToken(loginToken);
-      user = Meteor.users.findOne({
+      user = Users.findOne({
         'services.resume.loginTokens.hashedToken': hashToken,
       });
     } else if (!Meteor.settings.public.sandstorm) {
@@ -80,19 +80,19 @@ if (Meteor.isServer) {
       });
     }
     const exporter = new Exporter(boardId);
-    if (exporter.canExport(user)) {
-      body = params.query.delimiter
-        ? exporter.buildCsv(params.query.delimiter)
-        : exporter.buildCsv();
-      res.writeHead(200, {
-        'Content-Length': body.length,
-        'Content-Type': params.query.delimiter ? 'text/csv' : 'text/tsv',
-      });
-      res.write(body);
-      res.end();
-    } else {
-      res.writeHead(403);
-      res.end('Permission Error');
-    }
+    //if (exporter.canExport(user)) {
+    body = params.query.delimiter
+      ? exporter.buildCsv(params.query.delimiter)
+      : exporter.buildCsv();
+    //'Content-Length': body.length,
+    res.writeHead(200, {
+      'Content-Type': params.query.delimiter ? 'text/csv' : 'text/tsv',
+    });
+    res.write(body);
+    res.end();
+    //} else {
+    //  res.writeHead(403);
+    //  res.end('Permission Error');
+    //}
   });
 }

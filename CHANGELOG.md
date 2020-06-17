@@ -1,3 +1,27 @@
+# v4.16 2020-06-17 Wekan release
+
+This release adds the following features:
+
+- [Add find-replace.sh script for development](https://github.com/wekan/wekan/commit/bda49ed60947e0438206b2f55119f5c5c132c734).
+  Thanks to xet7.
+
+and adds the following updates:
+
+- [Upgrade to Node 12.18.1](https://github.com/wekan/wekan/commit/b11ae567c9b2d16a115ea4f3f7f88e67d076f326).
+  Thanks to Node developers and xet7.
+
+and fixes the following bugs:
+
+- [OpenAPI: Fix jsdoc/operation matching](https://github.com/wekan/wekan/pull/3171).
+  Thanks to bentiss.
+- Fix finding corrent user [Part1](https://github.com/wekan/wekan/pull/3180) and
+  [Part2](https://github.com/wekan/wekan/commit/f245b6b7faa29b4f276527daca48c305fe9689c1).
+  Thanks to salleman33 and xet7.
+- [Try to prevent errors on CSV/TSV export](https://github.com/wekan/wekan/commit/b00db983c8506e0cdc9968e452c3c8025fc10776).
+  Thanks to xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.15 2020-06-16 Wekan release
 
 This release fixes the following bugs:
