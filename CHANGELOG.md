@@ -1,3 +1,28 @@
+# v4.18 2020-07-10 Wekan release
+
+This release adds the following updates:
+
+- [Upgrade to Node 12.18.2](https://github.com/wekan/wekan/commit/6e4407ed9cb3c95a99e0dbbb4383324dd57d6be1).
+  Thanks to Node developers and xet7.
+- [Update dependencies](https://github.com/wekan/wekan/commit/05cd1247ab935f586d747743bb9cd79d23e0b1e6).
+  Thanks to dependency developers and xet7.
+
+and fixes the following bugs:
+
+- [All logged in users are now allowed to reorder boards by dragging at All Boards page and Public Boards page](https://github.com/wekan/wekan/commit/ba24c4e40c728d030504ed21ccf79247d0449e1b).
+  Thanks to xet7.
+- [Fix running meteor for dev in rebuild-wekan.sh](https://github.com/wekan/wekan/commit/a77cf56fbdaf0b74d8b97aa41b0a88fee85e3ee1).
+  Thanks to xet7.
+- [Fix start-wekan.bat](https://github.com/wekan/wekan/commit/0be1c00fccef8797a1b3612593a6623a9b465e0d) and
+  [Windows bundle install](https://github.com/wekan/wekan/wiki/Windows#a-bundle-with-windows-nodemongodb).
+  Thanks to xet7.
+- [Fix typo](https://github.com/wekan/wekan/pull/3197).
+  Thanks to Lua00808.
+- [Fix creating user misbehaving in some special case](https://github.com/wekan/wekan/pull/3206).
+  Thanks to salleman33.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.17 2020-06-18 Wekan release
 
 This release fixes the following bugs:
