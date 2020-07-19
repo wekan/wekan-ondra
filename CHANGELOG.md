@@ -1,3 +1,20 @@
+# v4.20 2020-07-20 Wekan release
+
+This release adds the following updates:
+
+- Update dependencies[Part1](https://github.com/wekan/wekan/commit/419615bed43b6e9de4030193c47137a066b85bde) and
+  [Part2](https://github.com/wekan/wekan/commit/116372e11e09ce9b8376a8694553add595e02815).
+  Thanks to developers of dependencies and xet7.
+
+and fixes the following bugs:
+
+- [Change slug on card rename](https://github.com/wekan/wekan/pull/3214).
+  Thanks to NicoP-S.
+- [Add missing Wekan logo sizes for PWAs and Apps](https://github.com/wekan/wekan/commit/de28bf8569a7373a5d6fd60a4f413e76673adc26).
+  Thanks to xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.19 2020-07-18 Wekan release
 
 This release adds the following features:
