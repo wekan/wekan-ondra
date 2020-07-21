@@ -1,8 +1,17 @@
+# v4.21 2020-07-21 Wekan release
+
+This release adds the following new features:
+
+- [REST API: Changed edit_card and get_card_by_customfields to return full documents](https://github.com/wekan/wekan/pull/3215).
+  Thanks to gvespignani70.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.20 2020-07-20 Wekan release
 
 This release adds the following updates:
 
-- Update dependencies[Part1](https://github.com/wekan/wekan/commit/419615bed43b6e9de4030193c47137a066b85bde) and
+- Update dependencies [Part1](https://github.com/wekan/wekan/commit/419615bed43b6e9de4030193c47137a066b85bde) and
   [Part2](https://github.com/wekan/wekan/commit/116372e11e09ce9b8376a8694553add595e02815).
   Thanks to developers of dependencies and xet7.
 
