@@ -1,3 +1,32 @@
+# v4.22 2020-07-23 Wekan release
+
+This release adds back these features:
+
+- [Export to JSON and HTML .zip file](https://github.com/commit/1624fc82f7c319e84a78f29445c7867f7da15c32)
+  that also fixes #3216 Clone Boards not working.
+  Thanks to xet7.
+
+and hides these features temporarily:
+
+- [Hide CSV export until it's fixed in EdgeHTML compatible way](https://github.com/wekan/wekan/commit/045b8a84a29dde09201dd5108c757719d00e6f55).
+  Thanks to xet7.
+
+and adds the following updates:
+
+- [Upgrade to Node 12.18.3](https://github.com/wekan/wekan/commit/6f503ca818abff17a20b6612aeea1f9e2c4a8234).
+  Thanks to Node developers.
+
+and fixes the following bugs:
+
+- [Fix Snap](https://github.com/wekan/wekan/commit/68391a943bd37d9f98819ffb7b7a29692d0bd380).
+  This fix was already included to Wekan v4.21 to get it released.
+  TODO: Sometime migrate from Caddy v1 to Caddy v2.
+  Thanks to xet7.
+- [Fix detecting current IP address on rebuild-wekan.sh](https://github.com/wekan/wekan/commit/ec1d8f275ff4cd720a8cd3bc918b32f9c5f5d099).
+  Thanks to xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.21 2020-07-21 Wekan release
 
 This release adds the following new features:
