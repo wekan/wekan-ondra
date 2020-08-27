@@ -1,3 +1,28 @@
+# v4.24 2020-08-27 Wekan release
+
+This release adds the following updates:
+
+- [Upgrade to Meteor 1.11](https://github.com/wekan/wekan/commit/4d49265b25595444553e1c2d6e48c7a699949654).
+  Thanks to Meteor developers.
+- [Update bcrypt](https://github.com/wekan/wekan/commit/dee7020a5aaa90c8580ef42fa73aff0ca4ae3e12).
+  Thanks to bcrypt developers.
+- [Update dependencies](https://github.com/wekan/wekan/commit/60b2787c559b9966d6040a622c5b971fa95241c3).
+  Thanks to developers of dependencies.
+
+and adds the following translations:
+
+- [Add Trigger and Action header words to Rule Details](https://github.com/wekan/wekan/pull/3244).
+  Thanks to helioguardabaxo.
+- [Add Spanish (Peru) (es_PE)](https://github.com/wekan/wekan/commit/b9f87bf310b4f071c8219bb7511b15a7fa27340d).
+  Thanks to translators.
+
+and adds the following mouse scroll settings:
+
+- [Add setting for mouse scroll deltafactor. Fix snap setting for mouse scroll amount](https://github.com/wekan/wekan/commit/7e4b791c2964f4b130abbaee62ffdff1536450c4).
+  Thanks to danger89 and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.23 2020-08-13 Wekan release
 
 This release fixes following CRITICAL VULNERABILITIES:
