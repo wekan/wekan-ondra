@@ -93,7 +93,9 @@ services:
     #-------------------------------------------------------------------------------------
     # ==== MONGODB AND METEOR VERSION ====
     # a) For Wekan Meteor 1.8.x version at master branch, use mongo 4.x
-    image: mongo:latest
+    # DOES NOT WORK: mongo 4.4, see https://github.com/wekan/wekan/issues/3247
+    # WORKS: mongo 3.x and 4.2
+    image: mongo:4.2
     # b) For Wekan Meteor 1.6.x version at devel branch.
     # Only for Snap and Sandstorm while they are not upgraded yet to Meteor 1.8.x
     #image: mongo:3.2.21
@@ -354,8 +356,9 @@ services:
       #- OAUTH2_EMAIL_MAP=email
       #-----------------------------------------------------------------
       # ==== OAUTH2 Nextcloud ====
-      # 1) Register the application with Nextcloud: https://your.nextcloud/settings/admin/security
+      # 1) Register the application with Nextcloud: https://your.nextcloud/index.php/settings/admin/security
       #    Make sure you capture the application ID as well as generate a secret key.
+      #    Use https://your.wekan/_oauth/oidc for the redirect URI.
       # 2) Configure the environment variables. This differs slightly
       #     by installation type, but make sure you have the following:
       #- OAUTH2_ENABLED=true
