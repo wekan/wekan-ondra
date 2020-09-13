@@ -1,6 +1,6 @@
 {
   "name": "wekan",
-  "version": "v4.29.0",
+  "version": "v4.30.0",
   "description": "Open-Source kanban",
   "private": true,
   "scripts": {
@@ -65,13 +65,13 @@
     "es6-promise": "^4.2.4",
     "fibers": "^5.0.0",
     "flatted": "^3.0.4",
-    "gridfs-stream": "^1.1.1",
+    "gridfs-stream": "https://github.com/wekan/gridfs-stream/tarball/master",
     "jszip": "^3.4.0",
     "ldapjs": "^2.1.1",
     "markdown-it": "^11.0.0",
     "markdown-it-emoji": "^1.4.0",
     "meteor-node-stubs": "^1.0.1",
-    "mongodb": "^3.5.7",
+    "mongodb": "^3.6.2",
     "os": "^0.1.1",
     "page": "^1.11.5",
     "papaparse": "^5.2.0",
