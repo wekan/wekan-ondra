@@ -1,3 +1,28 @@
+# v4.49 2020-11-04 Wekan release
+
+This release adds the following new features:
+
+- [LDAP: Sync email address](https://github.com/wekan/wekan/pull/3329).
+  Thanks to gramakri.
+
+and adds the following changes:
+
+- [Changed board icons bigger at All Boards page](https://github.com/wekan/wekan/commit/76273300e749ebe3b1d711dee84336d03b31ed49).
+  Thanks to xet7.
+
+and adds the following translations:
+
+- [Translate some part of Gantt chart of Wekan Gantt GPL version](https://github.com/wekan/wekan/commit/fd363c69cc6e1cf3a283e3dbcc323edb1eae896e).
+  This only adds translations to all Wekan versions, not any GPL code to MIT version.
+  Thanks to xet7.
+
+and fixes the following bugs:
+
+- [Fix Trello import](https://github.com/wekan/wekan/commit/faad739f974a0392ca73e4db03e5267edcc5dec7).
+  Thanks to elct9620 and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.48 2020-11-02 Wekan release
 
 This release adds the following new features:
