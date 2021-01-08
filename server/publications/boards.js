@@ -27,6 +27,7 @@ Meteor.publish('boards', function() {
     {
       fields: {
         _id: 1,
+        boardId: 1,
         archived: 1,
         slug: 1,
         title: 1,
@@ -38,6 +39,71 @@ Meteor.publish('boards', function() {
         sort: 1,
       },
       sort: { sort: 1 /* boards default sorting */ },
+    },
+  );
+});
+
+Meteor.publish('mySwimlanes', function() {
+  const userId = this.userId;
+  const swimlanes = [];
+
+  Cards.find({
+    archived: false,
+    $or: [{ members: userId }, { assignees: userId }],
+  }).forEach(card => {
+    swimlanes.push(card.swimlaneId);
+  });
+
+  return Swimlanes.find(
+    {
+      // archived: false,
+      _id: { $in: swimlanes },
+    },
+    {
+      fields: {
+        _id: 1,
+        title: 1,
+        boardId: 1,
+        type: 1,
+        color: 1,
+        sort: 1,
+      },
+      // sort: {
+      //   sort: ['boardId', 'listId', 'sort'],
+      // },
+    },
+  );
+});
+
+Meteor.publish('myLists', function() {
+  const userId = this.userId;
+  const lists = [];
+
+  Cards.find({
+    archived: false,
+    $or: [{ members: userId }, { assignees: userId }],
+  }).forEach(card => {
+    lists.push(card.listId);
+  });
+
+  return Lists.find(
+    {
+      // archived: false,
+      _id: { $in: lists },
+    },
+    {
+      fields: {
+        _id: 1,
+        boardId: 1,
+        swimlaneId: 1,
+        title: 1,
+        color: 1,
+        type: 1,
+        sort: 1,
+      },
+      // sort: {
+      //   sort: ['boardId', 'listId', 'sort'],
+      // },
     },
   );
 });

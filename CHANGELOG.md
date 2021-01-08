@@ -1,3 +1,71 @@
+# v4.71 2021-01-08 Wekan release
+
+This release adds the following new features:
+
+- [My Cards add Due Date sort](https://github.com/wekan/wekan/pull/3419).
+  Thanks to jrsupplee.
+
+and adds the following improvements:
+
+- [Update to My Cards](https://github.com/wekan/wekan/pulls/3416).
+  Thanks to jrsupplee.
+- [Cards, custom fields are displayed in alphabetic order](https://github.com/wekan/wekan/pulls/3417).
+  Thanks to mfilser.
+
+and fixes the following bugs:
+
+- [Fixed Color picker of lists is empty. Fixed error about existing file at Wekan Docker version](https://github.com/wekan/wekan/issues/3418).
+  Thanks to bronger and xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
+# v4.70 2021-01-04 Wekan release
+
+This release adds the following CRITICAL SECURITY FIXES:
+
+- [Upgrade to Node.js 12.20.1](https://github.com/wekan/wekan/commit/4bfe017b08f573991fd1f9229ae53573798f475e).
+  Thanks to Node developers.
+
+and adds the following new features:
+
+- [Added many new translations to Wekan, now there is total 60 translations in Wekan. Updated translations. Organized pull-translations.sh alphabetically by
+  language name](https://github.com/wekan/wekan/commit/d171f4088f40512d321969df3f0c280a620c0c5f).
+  Thanks to translators and xet7.
+- [Added markdown and emoji to My Cards board, swimlane and list names](https://github.com/wekan/wekan/commit/763dc9c8e0122990c5f496392f2cce980c535dce).
+  Thanks to xet7.
+- [Show Admin Panel / People and Version also on mobile MiniScreen](https://github.com/wekan/wekan/commit/754a91dbdc3d7111c367cb5dd0a02250a837e42a).
+  Thanks to xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
+# v4.69 2021-01-02 Wekan release
+
+This release adds the following new features:
+
+- Teams/Organizations to Admin Panel. In Progress.
+  [Part 2](https://github.com/wekan/wekan/commit/ad482d5cfb72591f1b5c749c3c0156000dbf660a).
+  [Part 3](https://github.com/wekan/wekan/commit/b64cd358ed0af4395357423ad172b8dac9dc3178).
+  Thanks to xet7.
+- [My Cards](https://github.com/wekan/wekan/pull/3413).
+  Thanks to jrsupplee.
+
+and adds the following UI changes:
+
+- [Moved Public/Archive/Templates/etc options to click right top username Member Settings menu, where My Cards also
+  is](https://github.com/wekan/wekan/commit/0592b0c56ac372c87dea17f0a090e7d7569430d1).
+  Thanks to xet7.
+- [Reorder My Cards to be first at menu](https://github.com/wekan/wekan/commit/bfc16fc5442e8cc8c3cc03df992d5b1d1724338b).
+  Thanks to xet7.
+
+and fixes the following bugs:
+
+- [New Checklistitems are now autoresized too](https://github.com/wekan/wekan/pull/3411).
+  Thanks to mfilser.
+- [Swimlane + and = Icons resized for better handling at mobile view](https://github.com/wekan/wekan/pull/3412).
+  Thanks to mfilser.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v4.68 2020-12-29 Wekan release
 
 This release fixes the following bugs:
