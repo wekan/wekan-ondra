@@ -906,11 +906,7 @@
   "operator-member-abbrev": "m",
   "operator-assignee": "Кому назначено",
   "operator-assignee-abbrev": "a",
-<<<<<<< HEAD
-  "operator-creator": "creator",
-=======
   "operator-creator": "автор",
->>>>>>> upstream/master
   "operator-status": "статус",
   "operator-due": "выполнить к",
   "operator-created": "создано",
@@ -1002,17 +998,6 @@
   "moveSwimlanePopup-title": "Переместить дорожку",
   "custom-field-stringtemplate": "Строковый шаблон",
   "custom-field-stringtemplate-format": "Формат (используйте %{значение} для подстановки)",
-<<<<<<< HEAD
-  "custom-field-stringtemplate-separator": "Separator (use &#32; or &nbsp; for a space)",
-  "custom-field-stringtemplate-item-placeholder": "Press enter to add more items",
-  "creator": "Creator",
-  "filesReportTitle": "Files Report",
-  "orphanedFilesReportTitle": "Orphaned Files Report",
-  "reports": "Reports",
-  "rulesReportTitle": "Rules Report",
-  "copy-swimlane": "Copy Swimlane",
-  "copySwimlanePopup-title": "Copy Swimlane"
-=======
   "custom-field-stringtemplate-separator": "Разделитель (для пробела используйте &#32; или &nbsp;)",
   "custom-field-stringtemplate-item-placeholder": "Press enter to add more items",
   "creator": "Автор",
@@ -1022,5 +1007,4 @@
   "rulesReportTitle": "Отчёт по правилам",
   "copy-swimlane": "Скопировать дорожку",
   "copySwimlanePopup-title": "Скопировать дорожку"
->>>>>>> upstream/master
 }
