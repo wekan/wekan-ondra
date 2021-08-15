@@ -3,12 +3,23 @@
 Note: With Docker, please don't use latest tag. Only use release tags.
 See https://github.com/wekan/wekan/issues/3874
 
+# v5.50 2021-08-15 Wekan release
+
+This release fixes the following bugs:
+
+- [Fix: Save user initials and fullname when a new user is created](https://github.com/wekan/wekan/pull/3946).
+  Thanks to syndimann.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v5.49 2021-08-14 Wekan release
 
 This release adds the following new features:
 
 - [Text "Search" now translatable at Card Add Member/Assignee](https://github.com/wekan/wekan/commit/9ce65c601a875a4259fb69fdda45124b8412ae6f).
   Thanks to xet7.
+- [Add Card Comment Reactions](https://github.com/wekan/wekan/pull/3945).
+  Thanks to syndimann.
 
 Thanks to above GitHub users for their contributions and translators for their translations.
 
