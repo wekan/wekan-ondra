@@ -1,5 +1,21 @@
 [Mac ChangeLog](https://github.com/wekan/wekan/wiki/Mac)
 
+# v5.69 2021-10-28 WeKan ® release
+
+This release adds the following updates:
+
+- [Updated Docker base image to Ubuntu 21.10 Impish](https://github.com/wekan/wekan/commit/5411113544f040cab2df86234745e4846029660f).
+  Thanks to Ubuntu developers.
+
+and fixes the following bugs:
+
+- [Fix Docs: Only MAIL_URL and MAIL_FROM for email settings. Not Admin Panel anymore](https://github.com/wekan/wekan/commit/d9adce7b676b705da786eb44cd2c2c4dba120d30).
+  Thanks to niklasdahlheimer.
+- [Popup fixes: Archive cards, upload attachements etc](https://github.com/wekan/wekan/pull/4101).
+  Thanks to mfilser.
+  
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v5.68 2021-10-27 WeKan ® release
 
 This release adds the following new features:
