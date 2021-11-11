@@ -1,5 +1,34 @@
 [Mac ChangeLog](https://github.com/wekan/wekan/wiki/Mac)
 
+# v5.73 2021-11-11 WeKan ® release
+
+This release adds the following new features:
+
+- [Added NodeJS Statistics to Admin Panel/Versio](https://github.com/wekan/wekan/pull/4118).
+  Thanks to Ben0it-T.
+- [Card detail popup loads now comments if opened from board search](https://github.com/wekan/wekan/pull/4128).
+  Thanks to mfilser.
+
+and adds the following updates:
+
+- Updated dependencies
+  [Part 1](https://github.com/wekan/wekan/commit/cf6713a31c9f6ce9d30832ee6bf6c95d35d7044b),
+  [Part 2](https://github.com/wekan/wekan/commit/ac7ef4d4cd7179a140f0c56c7c7d1ffc33e75fbe).
+  Thanks to developers of dependencies.
+
+and fixes the following bugs:
+
+- [Card Details, add missing hr line before Activity title](https://github.com/wekan/wekan/pull/4117).
+  Thanks to Ben0it-T.
+- [Sidebar search only opens the card as popup on mobile view](https://github.com/wekan/wekan/pull/4122).
+  Thanks to mfilser.
+- [Fixed a bug related to the default text of the OIDC button](https://github.com/wekan/wekan/pull/4132).
+  Thanks to Emile840.
+- [Fix: Impossible to export board to excel where title exceeding 31 chars](https://github.com/wekan/wekan/pull/4135).
+  Thanks to Ben0it-T.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v5.72 2021-10-31 WeKan ® release
 
 This release adds the following new features:
