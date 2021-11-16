@@ -1,5 +1,40 @@
 [Mac ChangeLog](https://github.com/wekan/wekan/wiki/Mac)
 
+# v5.76 2021-11-16 WeKan ® release
+
+This release adds the following new features:
+
+- [Global search load card details](https://github.com/wekan/wekan/pull/4142).
+  Thanks to mfilser.
+- [Layout improvement: Adding organisations to the board](https://github.com/wekan/wekan/pull/4143).
+  Thanks to Ben0it-T.
+- [App reconnect is now possible if the connection was interrupted](https://github.com/wekan/wekan/pull/4147).
+  Thanks to mfilser.
+- [Boards view has now drag handles at desktop view if drag handles are enabled](https://github.com/wekan/wekan/pull/4149).
+  Thanks to mfilser.
+- [Account configuration of option loginExpirationInDays is now possible](https://github.com/wekan/wekan/pull/4150).
+  Thanks to mfilser.
+- [Part 2: Added remaining of Account configuration of option loginExpirationInDays for Snap](https://github.com/wekan/wekan/commit/17d90684bb59fd4159f80b2da224638824151c6f).
+  Thanks to xet7.
+- [Improve multi selection sidebar opening and closing](https://github.com/wekan/wekan/pull/4153).
+  Thanks to marook.
+
+and adds the following updates:
+
+- [Added release scripts for building local Docker images and pushing them to Quay.io and Docker Hub](https://github.com/wekan/wekan/commit/49c4dd8b14d9c13a9ae2aa18b37238a05ed41f92).
+  Thanks to xet7.
+
+and fixes the following bugs:
+
+- [Fixed trim whitespace at multiline editor fields](https://github.com/wekan/wekan/pull/4146).
+  Thanks to mfilser.
+- [Fixed placeholder was not visible at list view (mobile view)](https://github.com/wekan/wekan/pull/4148).
+  Thanks to mfilser.
+- [Fix list adding to bottom](https://github.com/wekan/wekan/pull/4152).
+  Thanks to mfilser.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v5.75 2021-11-12 WeKan ® release
 
 This release adds the following new features:
