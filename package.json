@@ -29,7 +29,7 @@
     "bcryptjs": "^2.4.3",
     "bson": "^4.5.2",
     "core-js": "^3.32.1",
-    "dompurify": "^2.4.1",
+    "dompurify": "^2.5.4",
     "es6-promise": "^4.2.4",
     "escape-string-regexp": "^5.0.0",
     "exceljs": "git+https://github.com/exceljs/exceljs.git",
