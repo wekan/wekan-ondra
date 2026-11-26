@@ -96,6 +96,176 @@ Which databases WeKan supports
 
 </details>
 
+# v13.34 2026-11-26 WeKan ® release
+
+**In short:** The **Docker image runs on musl** for amd64 and arm64, on a root
+of Alpine packages only, without the glibc and GCC runtime that held every
+finding of its security scan. WeKan's default database runs on **FerretDB
+v1.116.0**, whose one static binary is also **mongosh, sh and bash, written in
+Go**, so `docker exec -it wekan-ferretdb mongosh wekan` works again. The
+**wekan-gantt-gpl** snap and Docker image are no longer published, and
+**wekan-ondra** users get one script that moves them to the wekan snap.
+**Minicards are compact again**, and a board sets its own **due date
+colours**.
+
+This release has the following new features:
+
+**The WeKan Docker image** - what it runs on.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/662a845870053b07d63a9e188101cc936a1bcdc5">amd64 and arm64 run on musl, on a root of Alpine packages only</a>. Thanks to xet7.</summary>
+
+Artifact Hub's scan of the v13.33 image listed 42 findings, and every one was
+in glibc (`libc6`) and the GCC runtime (`libstdc++6`, `libgcc-s1`,
+`libatomic1`, `gcc-14-base`) that the glibc Node.js and its native modules
+need; none has a Debian fix, so no update could remove them. amd64 and arm64
+now take the release's musl bundle,
+`wekan-<version>-linux-<x64|arm64>-musl.zip`,
+which `musl.yml` builds in Alpine with the musl Node.js and the musl sharp,
+canvas, bcrypt and argon2, and starts until it answers HTTP 200. Their root is
+`scratch` filled by `apk --root --initdb` from `alpine:3.22` with musl,
+libstdc++, libgcc, libatomic, CA certificates and tzdata, each with its apk
+record so a scanner reads them as the Alpine packages they are; there is no
+shell, no apk and no glibc. The docker job waits for the musl bundles and
+checks that the Alpine base publishes both platforms. ppc64le, s390x, riscv64,
+386 and 32-bit ARM stay distroless glibc. node-patches now also builds
+`node-x64-musl` and `node-arm64-musl` in Alpine.
+`tests/dockerImageFromBundle.test.cjs`
+pins the musl root's packages and that it has no busybox, apk-tools,
+alpine-baselayout, libc6, gcompat or bash. The image itself was not built in
+this environment, which has no Docker: the first release's docker job and
+Artifact Hub's next scan are where the count is confirmed.
+
+</details>
+
+**The FerretDB container** - its shells.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/bec508107f43bb8d5892cf4d11ea12903a0c6d57">FerretDB v1.116.0: mongosh, sh and bash in the FerretDB container again, in Go</a>. Thanks to xet7.</summary>
+
+Since v1.115.0 the FerretDB image is distroless static, which brought its
+scanned findings to none but left `docker exec -it wekan-ferretdb mongosh`
+and `... bash` with nothing to run. In
+[FerretDB v1.116.0](https://github.com/wekan/FerretDB/releases/tag/v1.116.0)
+the static `ferretdb` binary is all three, BusyBox-style: it picks what to be
+from the name it is started as, and `/usr/bin/mongosh`, `/bin/sh` and
+`/bin/bash` are links to `/ferretdb`
+([the shells](https://github.com/wekan/FerretDB/commit/a87f3b232fd5659a9a45bf4bb1ecfe81c088543d),
+[their links](https://github.com/wekan/FerretDB/commit/1ae1fc1d481b60a429420aee0e4450e1ee80ca54),
+[all in /usr/bin](https://github.com/wekan/FerretDB/commit/3ea28b612ac8f160f9f73defd484bfa572ae97ae)).
+
+- **mongosh** is the goja JavaScript engine with the Go driver: `--eval`,
+  script files, piped statements and an interactive prompt with history; the
+  common `db`, collection and cursor methods, `rs.status()`, `show` and `use`,
+  in mongosh's own output. With no address it connects to the FerretDB it
+  runs in. Node.js modules (`require`) are not available.
+- **sh and bash** are the mvdan.cc/sh interpreter with `ls`, `cat`, `cp`,
+  `mv`, `rm`, `mkdir`, `df`, `du`, `ps`, `env`, `grep`, `head`, `tail`, `wc`
+  and more built in; any other program is "not available in this image"
+  (exit 127). `--build-arg FERRETDB_SHELL=false` leaves the sh and bash links
+  out.
+
+The image still has no Node.js, no C library and no C++ runtime: FerretDB's
+`tests/docker-runtime.py` and `integration/docker_release_test.sh` refuse any
+program that is not `/ferretdb`. The same release requires gorilla/websocket's
+newest commit, past GO-2026-6278 (a weak PRNG for the WebSocket mask key, found
+by the Quay scanner through statsviz in the debug handler,
+[the update](https://github.com/wekan/FerretDB/commit/51b4b1cb0c37480561e70ada7f6509670c0f8fe5)),
+and FerretDB's `tests/dependency-floors.py` keeps it there. WeKan's
+`docker-compose.yml` takes the newest FerretDB release, so nothing in WeKan
+pins a version. [Forgot Password](docs/Features/Login-Page/Forgot-Password.md)
+now repairs the database with `docker exec -it wekan-ferretdb mongosh wekan`.
+
+</details>
+
+**Due dates** - when a card turns amber and red.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/3de22209645d6c84af594ff454d40a38335fc90e">When a card turns amber and red is the board's own, in Board Settings / Date</a>. Thanks to BarbossHack and xet7.</summary>
+
+[#6947](https://github.com/wekan/wekan/issues/6947): the colours were fixed -
+amber 48 hours before the due date, red at it. Board Settings / Date now has
+the hours before the due date a card is due soon (48 until set) and the hours
+after it a card is overdue (0 until set), so a board can be grey above 24
+hours, amber within them and red when overdue. The card, the minicard and the
+checklist items read them (`models/lib/dueDateThresholds.js`); a board admin
+sets them with `setBoardDueThresholds`, which refuses anything but 0 to a year
+of hours, and they go with a board's WeKan export and import.
+`tests/dueDateThresholds6947.test.cjs` and
+`tests/playwright/specs/due-thresholds-6947.e2e.js` check the colours, the
+refusals and the form.
+
+</details>
+
+and fixes the following bugs:
+
+**Minicards** - how much room a card of the board takes.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/f5b0b754ac77621084a4febdaa1d771411bd49bc">No empty line at the top of every card, and one margin between cards</a>. Thanks to sirup and xet7.</summary>
+
+[#6943](https://github.com/wekan/wekan/issues/6943#issuecomment-7190880990):
+with the collapse caret hidden the board was still less compact than before.
+The space at the top was the keyboard move buttons: visually hidden, but a 14px
+line above every title. They are out of the flow now, 1px until focused, and
+still shown and usable from the keyboard. Between two cards the wrapper's 8px
+(12px on moderndark) came on top of the card's own 9px; it adds none now. With
+the menu hidden the title takes its corner too, a badge strip with no badge
+takes no line, and the desktop drag handle stays inside a one-line card.
+`tests/playwright/specs/minicard-spacing-6943.e2e.js` measures the board with
+the caret and the menu shown and hidden, with and without badges, and fails
+without the fix; `tests/minicardControls6943.test.cjs` pins the rules.
+
+</details>
+
+and changes the following releases:
+
+**Snaps** - which are published, and moving a server between them.
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/ca473ab225277fa44eccbb990842891597731531">wekan-gantt-gpl is no longer built or published</a>. Thanks to xet7.</summary>
+
+Its users moved to the official `wekan` snap, and
+[wekan/wekan-gantt-gpl](https://github.com/wekan/wekan-gantt-gpl) is archived.
+Release All, Push Snap to Store, Release All Missing and the repository update
+publish only `wekan` and `wekan-ondra`; the manual variant Docker image, the
+local release scripts and the build menus offer only `wekan-ondra`, and
+`releases/docker-push-gantt.sh` and the `wekan-gantt-gpl` store listing are
+removed. The release guards pin the two snaps, and refuse `wekan-gantt-gpl`
+wherever a snap name is checked. To move from it, install `wekan` and restore a
+backup of the `wekan-gantt-gpl` data into it.
+
+</details>
+
+<details>
+<summary><a href="https://github.com/wekan/wekan/commit/e8273479b7d742ace41e6743d7958ccb9f2bf8cf">wekan-ondra's page recommends the wekan snap, and one script moves a server to it</a>. Thanks to xet7.</summary>
+
+wekan-ondra is still published; its Snap Store page now recommends the
+official `wekan` snap. `migrate-wekan-ondra-to-wekan.sh`
+([the guide](docs/Platforms/FOSS/Container/Snap/Snap-Ondra-Gantt.md#moving-from-wekan-ondra-to-wekan))
+installs `wekan` from the channel wekan-ondra tracks, refusing one older than
+it, sets every setting of wekan-ondra on it, stops and disables wekan-ondra -
+they share their ports - and copies its data, wekan's own moved aside. It
+keeps wekan-ondra installed, so the move is undone with two commands, and
+`--dry-run` only shows what it would do. `tests/snapOndraMigrate.test.cjs`
+runs it against a fake `snap` command, and checks that every refusal changes
+nothing.
+
+</details>
+
+and updates the translations:
+
+**Translations** - a Bosnian unit that was left in English, and the due date
+colours' two hours in every language.
+
+**Languages updated:** 246 languages.
+
+- [Bosnian byte unit in Bosnian, not English](https://github.com/wekan/wekan/commit/bea9281a54bf891cb3c11843a4c51531d51cfd08):
+  "Bajtovi" in place of "Bytes", kept by audited-corrections.json. Thanks to
+  xet7.
+
+Thanks to above GitHub users for their contributions and translators for their translations.
+
 # v13.33 2026-11-26 WeKan ® release
 
 **In short:** The Docker entrypoint logs **no value read from the environment**
@@ -7968,331 +8138,5 @@ planner's own result, and `recover` stays red and names the jobs that failed
 again. `tests/retryFailedRelease.test.py` pins both.
 
 </details>
-
-Thanks to above GitHub users for their contributions and translators for their translations.
-
-# v12.68 2026-10-29 WeKan ® release
-
-**In short:** **Card Settings**, in Board Settings / Card, becomes two panes of
-checklists - the minicard's and the card's - with a checkbox per section and
-the board's custom fields as items, and the opened card and the minicard
-follow its sections and order; every opened card shows every field its board
-allows, empty or not. WeKan moves to **Meteor 3.6-rc.1**, keeping its own
-security additions to Meteor's packages. **Data health** in Admin Panel /
-Problems can now clean up custom fields whose boards were all deleted, and
-empty fields no longer show **Scrum** sections on boards that have Scrum
-turned off.
-
-This release adds the following new features:
-
-**Card Settings** - one set of checklists for what cards and minicards show,
-on the opened card and in Board Settings / Card alike.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/c0ec28e82f">Card Settings on the opened card, its sections as checklists</a>. Thanks to xet7.</summary>
-
-The opened card's "+ Add" is now **Card Settings**, and it no longer opens the
-Board Settings / Card popup: the button and everything below it are replaced
-by Card Settings itself until the X beside its title puts the card back. Under
-the title, **Show** chooses Show on Minicard or Show on Card, and the sections
-(Card, Date, Time, ... Comments) are drawn like checklists - the section is
-the checklist's title, its rows the items, each checkbox the board-wide Show
-on Card or Show on Minicard of that field. A row's hamburger holds On this
-card and Show empty; a section's holds Select all / Select none, its card
-actions and, for Card, Show empty fields, Ask for a reason and the Draggable
-table. Sections and rows drag like checklists and their items; a section's
-order is the board's new `cardSettingsSectionOrder`. Sections collapse, kept
-per user. Board Settings / Card is still the popup. Design:
-[Card Settings](docs/Features/Cards/Card-Settings.md).
-`tests/cardSettingsOnCard.test.cjs` and `card-add-fields.e2e.js` pin it.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/52de57c844">Board Settings / Card shows the same checklists as the opened card, by the same templates</a>. Thanks to xet7.</summary>
-
-Board Settings / Card had its own layout - a left menu of sections and a pane
-of two lists with column headings. It now draws the opened card's Card
-Settings itself, with no card: Show on Minicard / Show on Card, the sections
-as checklists and the same hamburgers; only On this card is left out, and the
-popup's header is the title and X. It is 600px wide instead of 1200px. With
-drag handles on, a row or section is dragged only by its handle and the rest
-scrolls the page; with them off, by its icon and name. A row dropped on
-another section goes back and nothing is saved. Testing both open at once
-found three faults, now fixed: their Show radios were one group, Select all
-could act on the other one, and switching Show could put a click on the
-neighbouring row. Docs:
-[Card Settings](docs/Features/Cards/Card-Settings.md).
-`tests/cardSettingsOnCard.test.cjs` compares the templates and
-`card-add-fields.e2e.js` the two views, row by row, and the drag rules.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/5adfc1b9db">A space between a checkbox and its label, on the rows and in the hamburgers</a>. Thanks to xet7.</summary>
-
-A checkbox touched its label on the rows of Card Settings and in their
-hamburgers' popups. Both now have a space's width between them. A tick is
-drawn rotated and reached past its box, so left to right it is drawn a little
-further left: a ticked box keeps the same space and its label does not move.
-`card-add-fields.e2e.js` measures it, ticked and unticked.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/3e5bc58105">A checkbox per section, every field always shown, Card Settings only in Board Settings</a>. Thanks to xet7.</summary>
-
-The opened card has no Card Settings button any more; Card Settings is Board
-Settings / Card. A card shows every field its board shows on cards, empty or
-not, so On this card, Show empty and Show empty fields are gone. Each section
-has a checkbox before its title that hides the whole section on the chosen
-side - the card or the minicard - while its rows keep their ticks. A section
-with one row is one line, and a hamburger is drawn only when it holds
-something. Custom Fields lists the board's custom fields as items, reordered
-by drag and drop, with a + under them that creates one. Card actions stay in
-the card's own section hamburgers. See
-[Card Settings](docs/Features/Cards/Card-Settings.md).
-`tests/cardSettingsSectionShown.test.cjs`,
-`tests/cardSettingsCustomFields.test.cjs` and `card-add-fields.e2e.js` pin it.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/9c9742e09d">Hamburger menus open on top of Card Settings, next to their button</a>. Thanks to xet7.</summary>
-
-A hamburger of Card Settings opened its menu in Card Settings' place, and
-Card Settings disappeared until the back arrow. Its menus and forms - a custom
-field's edit form, the + under Custom Fields - now open as a layer on top of
-Card Settings, next to their button, Card Settings still visible under it.
-Their X, their button again, a press elsewhere or Escape closes them. A layer
-opens toward the middle of Card Settings, so the + form no longer ran out of
-its left side. `tests/popupLayer.test.cjs` and `card-add-fields.e2e.js` pin it.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/2bd5d1180a">Two panes; the card and the minicard follow Card Settings' order; menus open inline</a>. Thanks to xet7.</summary>
-
-The opened card and the minicard now draw Card Settings' sections in Card
-Settings' order, each section's fields in its rows' order, so dragging a
-section or a row there moves it on the card or the minicard; the order is per
-side, and a default board's card starts with Labels. Every section of the card
-has the same heading, Voting and Planning Poker included. Card Settings shows
-the minicard's pane and the card's side by side, each folding and scrolling on
-its own, with a splitter between them to change their widths, stacked when
-narrow; the Show radio is gone and the corner grip resizes the popup. A
-hamburger's content opens under its line instead of in a popup, the hamburger
-showing it is open, which replaces the layers of the entry above.
-`card-settings-sections-order.e2e.js` and the new node tests pin it.
-
-</details>
-
-and updates the following dependencies:
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/120f484a30">Meteor 3.6-rc.1, with WeKan's six Meteor package forks rebased onto it</a>. Thanks to xet7.</summary>
-
-[Meteor 3.6-rc.1](https://forums.meteor.com/t/meteor-3-6-rc-1-rspack-2-x-native-typescript-node-js-26-pnpm-monorepos-instrumentation-pwas-and-a-friendlier-cli/64773/18)
-carries the security fixes of Meteor 3.5.3 and 3.5.4. `meteor update
---release 3.6-rc.1` first failed with "No version of shell-server satisfies
-all constraints": WeKan's forks of allow-deny, ddp-server, dynamic-import,
-facebook-oauth, google-oauth and shell-server in `packages/`, made because
-3.6-rc.0 lacked the 3.5.3 fixes, were pinned to rc.0's versions. They were not
-deleted, because rc.1 still lacks what is WeKan's own in them: the Admin Panel
-/ Problems reports of refused attempts, and the crypto-RNG keys of
-dynamic-import and meteor shell (rc.1 still uses `Math.random()`). Each fork
-is now rc.1's package with WeKan's changes merged onto it three-way, versioned
-rc.1's `_1`. The experimental Bun build's Meteor patch applies unchanged to
-rc.1 and is renamed for it; the Dockerfile's `METEOR_RELEASE` follows. See
-[Meteor 3.5.3 security fixes](docs/Security/Meteor-3.5.3-Security-Fixes-2026-10-22.md).
-`tests/meteor353SecurityFixes.test.cjs` and `meteorForkRandomKeys.test.cjs`
-pin the forks, and `meteor-353-security.e2e.js` passes on rc.1.
-
-</details>
-
-and fixes the following bugs:
-
-**The opened card** - its sections show only what the board allows.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/0a224b3cea">Show empty fields shows no Scrum section the board has turned off</a>. Thanks to jullbo and xet7.</summary>
-
-With Board Settings / Card's "Show empty fields" on (since v12.66), every
-opened card showed the "Scrum settings" heading and its sections although
-Board Settings / Scrum had none of its fields turned on
-([#6830](https://github.com/wekan/wekan/issues/6830)). The Scrum fields are
-the card's only sections with no board flag in the template, and the card's
-section list asked only whether the card shows the field - which Show empty
-fields, Show empty and On this card answer yes. A Scrum section now needs the
-board's Scrum visibility first, as Members, Vote and Poker already did; a
-turned-on Scrum field is still shown empty.
-`tests/scrumSectionsShowEmpty6830.test.cjs` pins the rule and that no other
-client code decides a Scrum section by the card alone, and
-`card-add-fields.e2e.js` checks the card.
-
-</details>
-
-**Data health** - Admin Panel / Problems' checks of custom fields.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/9dc3fc3f31">Custom fields whose boards were all deleted get their own check</a>. Thanks to Raymond-Voogt and xet7.</summary>
-
-"Custom fields listing a board that does not exist" also counted fields whose
-boards were ALL deleted, which its Repair skips on purpose, since removing the
-dead boards would leave the field on no board. The count could therefore never
-go down: one instance showed 510 fields and "Repaired: 0" after every click
-([#6829](https://github.com/wekan/wekan/issues/6829)). Those fields now have a
-check of their own, "Custom fields whose boards were all deleted", whose
-Repair deletes the definitions after the confirming second click. No existing
-board shows them; a value a card on a live board still holds is left alone and
-stays listed under "Cards with values for a custom field that is not on their
-board". The old check counts only fields with a live board left, so its Repair
-brings it to zero. `tests/dataHealth6818.test.cjs` pins both checks, the
-confirmation, and that live fields and card values are not touched.
-
-</details>
-
-and fixes the following translation:
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/81e6988491">Southern Sotho: dikarolo, not masimo, for data fields</a>. Thanks to xet7.</summary>
-
-**Languages updated:** Southern Sotho.
-
-Three Southern Sotho strings called a data field "masimo", which means farm
-fields: Show empty fields, the fields of a cron schedule, and the webhook's
-optional fields. They now use "dikarolo", the word the file already uses for
-card and custom fields. `sesotho-popup-titles.e2e.js` caught the first; the
-other two are low confidence.
-
-</details>
-
-Thanks to above GitHub users for their contributions and translators for their translations.
-
-# v12.67 2026-10-28 WeKan ® release
-
-**In short:** a list's **Add card** form closes once the card is added, unless
-**Member Settings** keeps it open for the next one. And the v12.66 release build
-is whole again: the **emulated-CPU Linux bundles** and **win32**, **FreeBSD**,
-**OpenBSD**, the **Mac app**, the **Sandstorm** .spk, the **Ondra** and **Gantt
-GPL** snaps and the **Bun** bundles had failed to build or to start - most
-because build scripts had moved their files into `.tools/` and some callers had
-not.
-
-This release adds the following new features:
-
-**Add card** - a list's form for new cards.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/70de255333">The form closes after the card is added, unless Member Settings keeps it open</a>. Thanks to brlin-tw and xet7.</summary>
-
-The form stayed open after every card for the next one, which
-[#6827](https://github.com/wekan/wekan/issues/6827) found unexpected. It now
-closes once the card - or every card of a multi-line paste - is added. Member
-Settings / Change Settings has a new switch, **Keep the Add card form open
-after adding a card**, off by default, for typing several cards in a row. The
-form is closed after the last title rather than at submit, because the paste
-loop still reads the form between titles, and a failed add keeps the form and
-its text. The two new strings are translated into every language, many with
-low confidence (listed in the commit). `tests/keepAddCardFormOpen6827.test.cjs`
-and `keep-add-card-form-open-6827.e2e.js` pin both settings, a paste and a
-failure.
-
-</details>
-
-and fixes the following bugs:
-
-**Linux bundles for emulated CPUs** - armhf, armv6, armv7, i386, ppc64le,
-riscv64 and s390x, and win32 built from the i386 one.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/427d212627">The container that installs their Node.js gets .tools/tmp as its /tmp again</a>. Thanks to xet7.</summary>
-
-`install-node-for-arch.sh` refuses to run without `TMPDIR`, because a
-container's own `/tmp` is a small part of its writable layer.
-`releases/repack-bundle-for-arch.sh` mounts this checkout's `.tools/tmp` there
-and sets it; the release workflow's own `docker run` did not, so every
-emulated arch stopped at "TMPDIR must be the mounted .tools/tmp" in v12.66,
-and win32, which builds from the i386 bundle's Node.js, had nothing to build
-with. The step now mounts `.tools/tmp/repack-<arch>-tmp` as `/tmp`.
-
-</details>
-
-**FreeBSD, OpenBSD and the Mac app** - bundles started by `start-wekan.sh`
-where there is no `/proc`.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/290e525b46">start-wekan.sh starts WeKan again where there is no /proc</a>. Thanks to xet7.</summary>
-
-Since the macOS shell-script work, the memory budget read `/proc/meminfo` with
-no fallback. `awk` fails where there is no `/proc`, and under `set -eu` an
-assignment from a failed substitution ends the script without a word - so in
-v12.66 the FreeBSD and OpenBSD bundles and the Mac app never started WeKan,
-with an empty log. The read has its `|| true` again and `sysctl` gives the
-memory. `tests/macosShellPortability.test.cjs` runs those lines under `set
--eu` without `/proc` and requires a number, with the unguarded line as the
-negative case, and fails on any `set -e` script whose `/proc` read in `$(...)`
-has no fallback.
-
-</details>
-
-**Sandstorm** - the .spk and the meteor-spk toolchain it is packed with.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/f68b130f15">meteor-spk is assembled where the .spk is packed from, in .tools</a>. Thanks to xet7.</summary>
-
-`sandstorm-src/build-deps.sh` still assembled `meteor-spk.deps` in
-`~/projects/meteor-spk`, and the workflows put that on PATH, while
-`releases/sandstorm-slim-spk.sh` looked in `.tools/projects/meteor-spk`: "no
-meteor-spk.deps", and the v12.66 .spk did not pack. `build-deps.sh` now uses
-the same `.tools` directory, as do the Sandstorm, Sandstorm store and
-meteor-spk workflows. `tests/toolsDirOnly.test.cjs` scans `sandstorm-src/`
-too, and fails on a workflow that names `~/projects`.
-
-</details>
-
-**Snaps** - the Ondra and Gantt GPL variants, built from a copy of the tree.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/d24598ce25">A copy of the source tree without .git gets its own .tools/tmp</a>. Thanks to xet7.</summary>
-
-`releases/tools-env.sh` made `.tools/tmp` only in a git checkout, so that
-scripts mounted alone into a container do not make a `/.tools` there. The
-variant snaps build from a copy without `.git`, so no `TMPDIR` was found and
-every `fetch.sh` in `snapcraft.yaml` stopped at "TMPDIR: unbound variable" -
-which v12.66 reported as the Caddy download failing. A tree with
-`package.json` beside `releases/tools-env.sh` counts as a source tree.
-`tests/toolsDirOnly.test.cjs` checks such a copy, and `releases/` alone as the
-negative case, where no `.tools/` is made and no `TMPDIR` is invented.
-
-</details>
-
-**Bun bundles** - their Linux smoke tests.
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/1167cbd3b0">The smoke-test MongoDB starts on a 6.19+ kernel, and Chromium is found</a>. Thanks to xet7.</summary>
-
-linux-x64: `mongo:8` refused to start on the runner's newer kernel ("Linux
-kernel versions 6.19 and newer has a known incompatibility"); the smoke test
-pins `mongo:9.0.4`, which recognises Ubuntu kernels that have the fix
-([Supported databases](docs/Databases/Supported.md)). linux-arm64: Chromium
-was installed into `~/.cache/ms-playwright` while the build looked in
-`.tools/ms-playwright`; the install step now uses the same path.
-
-</details>
-
-<details>
-<summary><a href="https://github.com/wekan/wekan/commit/bce686ce46">Its guard pins mongo:9.0.4, not the mongo:8 that stopped starting</a>. Thanks to xet7.</summary>
-
-`tests/bunSmokeMongo.test.cjs` required the workflow to run `mongo:8`, the
-floating tag that refused to start on the runner's kernel. It now requires
-`mongo:9.0.4`, and fails if `mongo:8` comes back.
-
-</details>
-
-and updates the following documentation:
-
-- [WeKan vs Trello vs Jira says when WeKan added each feature it listed as missing](https://github.com/wekan/wekan/commit/cbdff47edb).
-  Thanks to xet7.
 
 Thanks to above GitHub users for their contributions and translators for their translations.

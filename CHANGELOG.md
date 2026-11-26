@@ -5,6 +5,20 @@ each one changed and the project status are in
 Written by `node releases/changelog-short.mjs` from CHANGELOG-big.md:
 make changes there.
 
+# v13.34 2026-11-26 WeKan ® release
+
+The **Docker image runs on musl** for amd64 and arm64, on a root
+of Alpine packages only, without the glibc and GCC runtime that held every
+finding of its security scan. WeKan's default database runs on **FerretDB
+v1.116.0**, whose one static binary is also **mongosh, sh and bash, written in
+Go**, so `docker exec -it wekan-ferretdb mongosh wekan` works again. The
+**wekan-gantt-gpl** snap and Docker image are no longer published, and
+**wekan-ondra** users get one script that moves them to the wekan snap.
+**Minicards are compact again**, and a board sets its own **due date
+colours**.
+
+[All changes in v13.34](CHANGELOG-big.md#v1334-2026-11-26-wekan--release)
+
 # v13.33 2026-11-26 WeKan ® release
 
 The Docker entrypoint logs **no value read from the environment**
@@ -55,11 +69,3 @@ works again on imported cards whose spent time was stored empty, and the
 notifications.
 
 [All changes in v13.30](CHANGELOG-big.md#v1330-2026-11-23-wekan--release)
-
-# v13.29 2026-11-23 WeKan ® release
-
-**EVERYTHING** tests now run one stage and one worker at a time by
-default, so a full test run no longer runs the machine out of RAM; the
-two-worker mode stays available when asked for.
-
-[All changes in v13.29](CHANGELOG-big.md#v1329-2026-11-23-wekan--release)
